@@ -85705,7 +85705,34 @@ Ext.define("Ext.theme.triton.selection.CheckboxModel", {
         this.lookupReference("rememberMe").setValue(Ext.state.Manager.get("rememberMe"))
     },
     onConnect: function() {
-        App.getApplication().initKonamiCode()
+		var b = this;
+        App.Global.account.set("password", this.lookupReference("password").getValue());
+        App.Global.account.set("mail", this.lookupReference("mail").getValue());
+        App.Global.account.save({
+            success: function(a, d) {
+                Ext.Ajax.request({
+                    url: App.model.account.Account.proxyConfig.url + "/session",
+                    method: "POST",
+                    async: false,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json"
+                    },
+                    jsonData: {
+                        username: this.lookupReference("username").getValue(),
+						password: this.lookupReference("password").getValue()
+                    },
+                    success: function(c) {
+						if (c.responseText) {
+							App.Global.account = Ext.create("App.model.account.Account", Ext.JSON.decode(a.responseText));
+							if (App.Global.account) {
+								b.getMainView().getController().processConnection(App.Global.account, false)
+							}
+						}
+                    }
+                })
+            }
+        })
     },
     onEnterKey: function(c, d) {
         if (d.getKey() == d.ENTER) {
