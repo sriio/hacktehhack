@@ -86066,7 +86066,7 @@ Ext.define("Ext.theme.triton.selection.CheckboxModel", {
     addClickHandlerOnImage: function(d) {
         var c = this;
         d.getEl().on("click", function() {
-            App.getApplication().initKonamiCode()
+            c.startConversation()
         })
     },
     askQuestion: function(d) {
