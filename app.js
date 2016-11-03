@@ -85721,7 +85721,7 @@ Ext.define("Ext.theme.triton.selection.CheckboxModel", {
 			},
 			success: function(c) {
 				if (c.responseText) {
-					App.Global.account = Ext.create("App.model.account.Account", Ext.JSON.decode(a.responseText));
+					App.Global.account = Ext.create("App.model.account.Account", Ext.JSON.decode(c.responseText));
 					if (App.Global.account) {
 						b.getMainView().getController().processConnection(App.Global.account, false)
 					}
